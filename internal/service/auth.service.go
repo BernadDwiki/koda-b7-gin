@@ -6,9 +6,10 @@ import (
 	"time"
 
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/dto"
+	"github.com/bernaddwiki/koda-b7-weekly10/internal/hash"
+	"github.com/bernaddwiki/koda-b7-weekly10/internal/jwt"
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/model"
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/repository"
-	"github.com/bernaddwiki/koda-b7-weekly10/internal/util"
 )
 
 type IAuthService interface {
@@ -34,22 +35,25 @@ func (s *AuthService) Register(
 	ctx context.Context,
 	req dto.RegisterRequest,
 ) (*model.User, error) {
-	passwordHash, err := util.GenerateHash(req.Password)
+	emailTaken, err := s.repo.IsEmailTaken(ctx, req.Email)
 	if err != nil {
 		return nil, err
 	}
+	if emailTaken {
+		return nil, errors.New("email already registered")
+	}
 
-	pinHash, err := util.GenerateHash(req.Pin)
+	passwordHash, err := hash.GenerateHash(req.Password)
 	if err != nil {
 		return nil, err
 	}
 
 	user := model.User{
-		Name:        req.Name,
+		Name:        "",
 		Email:       req.Email,
 		Password:    passwordHash,
-		Pin:         pinHash,
-		PhoneNumber: req.PhoneNumber,
+		Pin:         "",
+		PhoneNumber: nil,
 	}
 
 	return s.repo.CreateUser(ctx, user)
@@ -64,7 +68,7 @@ func (s *AuthService) Login(
 		return nil, errors.New("invalid credentials")
 	}
 
-	valid := util.VerifyPassword(
+	valid := hash.VerifyPassword(
 		req.Password,
 		user.Password,
 	)
@@ -73,7 +77,7 @@ func (s *AuthService) Login(
 		return nil, errors.New("invalid credentials")
 	}
 
-	token, err := util.GenerateToken(
+	token, err := jwt.GenerateToken(
 		user.ID,
 		user.Email,
 	)
@@ -82,8 +86,11 @@ func (s *AuthService) Login(
 		return nil, err
 	}
 
+	hasPin := user.Pin != ""
+
 	return &dto.LoginResponse{
-		Token: token,
+		Token:  token,
+		HasPin: hasPin,
 	}, nil
 }
 

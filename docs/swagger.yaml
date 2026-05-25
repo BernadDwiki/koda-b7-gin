@@ -1,0 +1,575 @@
+basePath: /
+definitions:
+  github_com_bernaddwiki_koda-b7-weekly10_internal_dto.ChangePasswordRequest:
+    properties:
+      current_password:
+        minLength: 8
+        type: string
+      new_password:
+        minLength: 8
+        type: string
+    required:
+    - current_password
+    - new_password
+    type: object
+  github_com_bernaddwiki_koda-b7-weekly10_internal_dto.CheckPinRequest:
+    properties:
+      pin:
+        type: string
+    required:
+    - pin
+    type: object
+  github_com_bernaddwiki_koda-b7-weekly10_internal_dto.CreateTopUpRequest:
+    properties:
+      amount:
+        type: integer
+      note:
+        type: string
+      payment_method_id:
+        type: integer
+    required:
+    - amount
+    - payment_method_id
+    type: object
+  github_com_bernaddwiki_koda-b7-weekly10_internal_dto.CreateTransferRequest:
+    properties:
+      amount:
+        type: integer
+      note:
+        type: string
+      pin:
+        type: string
+      receiver_id:
+        type: integer
+    required:
+    - amount
+    - pin
+    - receiver_id
+    type: object
+  github_com_bernaddwiki_koda-b7-weekly10_internal_dto.EditPinRequest:
+    properties:
+      current_pin:
+        type: string
+      new_pin:
+        type: string
+    required:
+    - current_pin
+    - new_pin
+    type: object
+  github_com_bernaddwiki_koda-b7-weekly10_internal_dto.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  github_com_bernaddwiki_koda-b7-weekly10_internal_dto.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 8
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response:
+    properties:
+      data: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  github_com_bernaddwiki_koda-b7-weekly10_internal_dto.SetPinRequest:
+    properties:
+      pin:
+        type: string
+    required:
+    - pin
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API documentation for E-Wallet Backend
+  title: E-Wallet API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login menggunakan email dan password
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      summary: Login User
+      tags:
+      - Auth
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Invalidate current JWT token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      security:
+      - BearerAuth: []
+      summary: Logout User
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user using name, email, and password
+      parameters:
+      - description: Register Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      summary: Register User
+      tags:
+      - Auth
+  /user/check-pin:
+    post:
+      consumes:
+      - application/json
+      description: Verify current user PIN
+      parameters:
+      - description: Check PIN Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.CheckPinRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      security:
+      - BearerAuth: []
+      summary: Check PIN
+      tags:
+      - User
+  /user/edit-pin:
+    put:
+      consumes:
+      - application/json
+      description: Update current user PIN
+      parameters:
+      - description: Edit PIN Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.EditPinRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      security:
+      - BearerAuth: []
+      summary: Edit PIN
+      tags:
+      - User
+  /user/password:
+    put:
+      consumes:
+      - application/json
+      description: Change user password
+      parameters:
+      - description: Change Password Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      security:
+      - BearerAuth: []
+      summary: Change Password
+      tags:
+      - User
+  /user/profile:
+    get:
+      consumes:
+      - application/json
+      description: Get user profile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      security:
+      - BearerAuth: []
+      summary: Get Profile
+      tags:
+      - User
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update user profile including optional profile picture upload
+      parameters:
+      - description: Name
+        in: formData
+        name: name
+        type: string
+      - description: Phone Number
+        in: formData
+        name: phone_number
+        type: string
+      - description: Profile Picture
+        in: formData
+        name: profile_picture
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      security:
+      - BearerAuth: []
+      summary: Update Profile
+      tags:
+      - User
+  /user/receivers:
+    get:
+      consumes:
+      - application/json
+      description: Search for receiver users by name or email
+      parameters:
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      security:
+      - BearerAuth: []
+      summary: Find Receivers
+      tags:
+      - User
+  /user/set-pin:
+    post:
+      consumes:
+      - application/json
+      description: Set a new user PIN
+      parameters:
+      - description: Set PIN Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.SetPinRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      security:
+      - BearerAuth: []
+      summary: Set PIN
+      tags:
+      - User
+  /wallet/dashboard:
+    get:
+      consumes:
+      - application/json
+      description: Get authenticated user wallet summary data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      security:
+      - BearerAuth: []
+      summary: Wallet Dashboard
+      tags:
+      - Wallet
+  /wallet/top-up:
+    post:
+      consumes:
+      - application/json
+      description: Create a wallet top-up request using payment method
+      parameters:
+      - description: Top Up Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.CreateTopUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      security:
+      - BearerAuth: []
+      summary: Create Top Up
+      tags:
+      - Wallet
+  /wallet/transactions:
+    get:
+      consumes:
+      - application/json
+      description: Get transaction report or paginated history for authenticated user
+      parameters:
+      - default: 7
+        description: Number of days to include in report
+        in: query
+        name: days
+        type: integer
+      - default: both
+        description: 'Filter by flow: income, expense, or both'
+        in: query
+        name: flow
+        type: string
+      - description: Search term for transaction history
+        in: query
+        name: search
+        type: string
+      - description: Page number for paginated history
+        in: query
+        name: page
+        type: integer
+      - description: Limit per page for paginated history
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      security:
+      - BearerAuth: []
+      summary: Transaction Report
+      tags:
+      - Wallet
+  /wallet/transfer:
+    post:
+      consumes:
+      - application/json
+      description: Create a wallet transfer to another user
+      parameters:
+      - description: Transfer Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.CreateTransferRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      security:
+      - BearerAuth: []
+      summary: Create Transfer
+      tags:
+      - Wallet
+schemes:
+- http
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

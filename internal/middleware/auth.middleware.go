@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/dto"
+	"github.com/bernaddwiki/koda-b7-weekly10/internal/jwt"
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/repository"
-	"github.com/bernaddwiki/koda-b7-weekly10/internal/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -60,7 +60,7 @@ func AuthMiddleware(
 			return
 		}
 
-		claims, err := util.VerifyToken(token)
+		claims, err := jwt.VerifyToken(token)
 		if err != nil {
 			ctx.AbortWithStatusJSON(
 				http.StatusUnauthorized,

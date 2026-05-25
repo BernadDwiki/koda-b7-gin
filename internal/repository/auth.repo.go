@@ -11,6 +11,8 @@ import (
 type IAuthRepository interface {
 	CreateUser(ctx context.Context, user model.User) (*model.User, error)
 	FindUserByEmail(ctx context.Context, email string) (*model.User, error)
+	IsEmailTaken(ctx context.Context, email string) (bool, error)
+	IsPhoneTaken(ctx context.Context, phoneNumber string) (bool, error)
 	StoreRevokedToken(ctx context.Context, userID int, token string, expiredAt time.Time) error
 	IsTokenRevoked(ctx context.Context, token string) (bool, error)
 }
@@ -100,6 +102,34 @@ func (r *AuthRepository) FindUserByEmail(ctx context.Context, email string) (*mo
 	}
 
 	return &user, nil
+}
+
+func (r *AuthRepository) IsEmailTaken(ctx context.Context, email string) (bool, error) {
+	query := `
+	SELECT EXISTS(
+		SELECT 1
+		FROM users
+		WHERE email = $1
+	)
+	`
+
+	var exists bool
+	err := r.db.QueryRow(ctx, query, email).Scan(&exists)
+	return exists, err
+}
+
+func (r *AuthRepository) IsPhoneTaken(ctx context.Context, phoneNumber string) (bool, error) {
+	query := `
+	SELECT EXISTS(
+		SELECT 1
+		FROM users
+		WHERE phone_number = $1
+	)
+	`
+
+	var exists bool
+	err := r.db.QueryRow(ctx, query, phoneNumber).Scan(&exists)
+	return exists, err
 }
 
 func (r *AuthRepository) StoreRevokedToken(
