@@ -153,11 +153,28 @@ func (u *UserService) FindReceivers(
 		}
 	}
 
+	var nextPage *int
+	var prevPage *int
+
+	totalPage := (total + limit - 1) / limit
+
+	if page < totalPage {
+		next := page + 1
+		nextPage = &next
+	}
+
+	if page > 1 {
+		prev := page - 1
+		prevPage = &prev
+	}
+
 	return &dto.ReceiverListResponse{
-		Items: items,
-		Page:  page,
-		Limit: limit,
-		Total: total,
+		Items:    items,
+		Page:     page,
+		Limit:    limit,
+		Total:    total,
+		NextPage: nextPage,
+		PrevPage: prevPage,
 	}, nil
 }
 
@@ -198,7 +215,7 @@ func (u *UserService) UpdateProfile(
 		pictureURL = "/img/" + fileName
 	}
 
-	if input.Name == "" && input.PhoneNumber == "" && pictureURL == "" {
+	if input.Name == nil && input.PhoneNumber == nil && pictureURL == "" {
 		user, err := u.repo.GetProfile(ctx, userID)
 		if err != nil {
 			return nil, err
@@ -218,7 +235,16 @@ func (u *UserService) UpdateProfile(
 		}, nil
 	}
 
-	if err := u.repo.UpdateProfile(ctx, userID, input.Name, pictureURL, input.PhoneNumber); err != nil {
+	name := ""
+	updatedPhone := ""
+	if input.Name != nil {
+		name = *input.Name
+	}
+	if input.PhoneNumber != nil {
+		updatedPhone = *input.PhoneNumber
+	}
+
+	if err := u.repo.UpdateProfile(ctx, userID, name, pictureURL, updatedPhone); err != nil {
 		return nil, err
 	}
 

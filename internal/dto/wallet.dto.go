@@ -19,13 +19,18 @@ type CreateTransferResponse struct {
 	Message       string `json:"message"`
 }
 
+type TransactionDailyReportItem struct {
+	Date             string `json:"date"`
+	Type             string `json:"type,omitempty"`
+	TotalTransaction int64  `json:"total_transaction"`
+}
+
 type CreateTopUpResponse struct {
-	TransactionID int64  `json:"transaction_id"`
-	Status        string `json:"status"`
-	Message       string `json:"message"`
-	Amount        int64  `json:"amount"`
-	TaxPercent    int64  `json:"tax_percent"`
-	TaxAmount     int64  `json:"tax_amount"`
-	AdminFee      int64  `json:"admin_fee"`
-	Total         int64  `json:"total"`
+	TransactionID int64   `json:"transaction_id"`
+	Status        string  `json:"status"`
+	Message       string  `json:"message"`
+	Amount        int64   `json:"amount"`
+	TaxPercent    float64 `json:"tax_percent"`
+	AdminFee      int64   `json:"admin_fee"`
+	Total         int64   `json:"total"`
 }

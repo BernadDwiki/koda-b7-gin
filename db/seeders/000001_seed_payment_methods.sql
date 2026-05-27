@@ -1,4 +1,8 @@
-INSERT INTO payment_methods (method_name, tax_percent, admin_fee)
+INSERT INTO payment_methods (
+    method_name,
+    tax_percent,
+    admin_fee
+)
 VALUES
 ('BRI', 5, 1500),
 ('Dana', 3, 1000),

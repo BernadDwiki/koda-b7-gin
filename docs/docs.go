@@ -46,14 +46,14 @@ const docTemplate = `{
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
@@ -132,8 +132,14 @@ const docTemplate = `{
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
@@ -177,14 +183,14 @@ const docTemplate = `{
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
@@ -228,14 +234,14 @@ const docTemplate = `{
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
@@ -279,14 +285,14 @@ const docTemplate = `{
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
@@ -333,7 +339,7 @@ const docTemplate = `{
                     }
                 }
             },
-            "put": {
+            "patch": {
                 "security": [
                     {
                         "BearerAuth": []
@@ -377,14 +383,14 @@ const docTemplate = `{
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
@@ -443,14 +449,14 @@ const docTemplate = `{
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
@@ -494,14 +500,14 @@ const docTemplate = `{
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
@@ -585,14 +591,14 @@ const docTemplate = `{
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
@@ -606,14 +612,14 @@ const docTemplate = `{
                 }
             }
         },
-        "/wallet/transactions": {
+        "/wallet/transaction-report": {
             "get": {
                 "security": [
                     {
                         "BearerAuth": []
                     }
                 ],
-                "description": "Get transaction report or paginated history for authenticated user",
+                "description": "Get daily transaction totals for authenticated user",
                 "consumes": [
                     "application/json"
                 ],
@@ -638,7 +644,55 @@ const docTemplate = `{
                         "description": "Filter by flow: income, expense, or both",
                         "name": "flow",
                         "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                        }
                     },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/wallet/transactions": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get paginated transaction history for authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Wallet"
+                ],
+                "summary": "Transaction History",
+                "parameters": [
                     {
                         "type": "string",
                         "description": "Search term for transaction history",
@@ -647,13 +701,15 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "Page number for paginated history",
+                        "default": 1,
+                        "description": "Page number",
                         "name": "page",
                         "in": "query"
                     },
                     {
                         "type": "integer",
-                        "description": "Limit per page for paginated history",
+                        "default": 10,
+                        "description": "Limit per page",
                         "name": "limit",
                         "in": "query"
                     }
@@ -665,14 +721,14 @@ const docTemplate = `{
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
@@ -722,12 +778,6 @@ const docTemplate = `{
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
-                        }
-                    },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
@@ -736,6 +786,12 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
                             "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
                         }

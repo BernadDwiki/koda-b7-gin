@@ -8,10 +8,12 @@ import (
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/jwt"
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/repository"
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 )
 
 func AuthMiddleware(
 	authRepo repository.IAuthRepository,
+	redisClient *redis.Client,
 ) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -33,10 +35,10 @@ func AuthMiddleware(
 			"Bearer ",
 		)
 
-		isRevoked, err := authRepo.IsTokenRevoked(
+		exists, err := redisClient.Exists(
 			ctx.Request.Context(),
-			token,
-		)
+			"blacklist:"+token,
+		).Result()
 
 		if err != nil {
 			ctx.AbortWithStatusJSON(
@@ -49,7 +51,7 @@ func AuthMiddleware(
 			return
 		}
 
-		if isRevoked {
+		if exists == 1 {
 			ctx.AbortWithStatusJSON(
 				http.StatusUnauthorized,
 				dto.Response{

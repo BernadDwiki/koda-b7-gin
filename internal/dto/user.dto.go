@@ -18,10 +18,12 @@ type ReceiverResponse struct {
 }
 
 type ReceiverListResponse struct {
-	Items []ReceiverResponse `json:"items"`
-	Page  int                `json:"page"`
-	Limit int                `json:"limit"`
-	Total int                `json:"total"`
+	Items    []ReceiverResponse `json:"items"`
+	Page     int                `json:"page"`
+	Limit    int                `json:"limit"`
+	Total    int                `json:"total"`
+	NextPage *int               `json:"next_page"`
+	PrevPage *int               `json:"prev_page"`
 }
 
 type SetPinRequest struct {
@@ -33,9 +35,9 @@ type CheckPinRequest struct {
 }
 
 type EditProfileRequest struct {
-	Name           string                `form:"name" binding:"omitempty,min=1,max=255"`
+	Name           *string               `form:"name" binding:"omitempty,min=1,max=255"`
 	ProfilePicture *multipart.FileHeader `form:"profile_picture" binding:"-"`
-	PhoneNumber    string                `form:"phone_number" binding:"omitempty"`
+	PhoneNumber    *string               `form:"phone_number" binding:"omitempty"`
 }
 
 type ChangePasswordRequest struct {

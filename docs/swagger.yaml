@@ -118,12 +118,12 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
         "401":
           description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "422":
+          description: Unprocessable Entity
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
       summary: Login User
@@ -173,8 +173,12 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
-        "400":
-          description: Bad Request
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "422":
+          description: Unprocessable Entity
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
       summary: Register User
@@ -199,12 +203,12 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
         "401":
           description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "422":
+          description: Unprocessable Entity
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
       security:
@@ -231,12 +235,12 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
         "401":
           description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "422":
+          description: Unprocessable Entity
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
       security:
@@ -263,12 +267,12 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
         "401":
           description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "422":
+          description: Unprocessable Entity
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
       security:
@@ -301,7 +305,7 @@ paths:
       summary: Get Profile
       tags:
       - User
-    put:
+    patch:
       consumes:
       - multipart/form-data
       description: Update user profile including optional profile picture upload
@@ -325,12 +329,12 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
         "401":
           description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "422":
+          description: Unprocessable Entity
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
         "500":
@@ -367,12 +371,12 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
         "401":
           description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "422":
+          description: Unprocessable Entity
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
       security:
@@ -399,12 +403,12 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
         "401":
           description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "422":
+          description: Unprocessable Entity
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
       security:
@@ -456,12 +460,12 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "422":
+          description: Unprocessable Entity
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
         "500":
@@ -473,11 +477,11 @@ paths:
       summary: Create Top Up
       tags:
       - Wallet
-  /wallet/transactions:
+  /wallet/transaction-report:
     get:
       consumes:
       - application/json
-      description: Get transaction report or paginated history for authenticated user
+      description: Get daily transaction totals for authenticated user
       parameters:
       - default: 7
         description: Number of days to include in report
@@ -489,15 +493,47 @@ paths:
         in: query
         name: flow
         type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      security:
+      - BearerAuth: []
+      summary: Transaction Report
+      tags:
+      - Wallet
+  /wallet/transactions:
+    get:
+      consumes:
+      - application/json
+      description: Get paginated transaction history for authenticated user
+      parameters:
       - description: Search term for transaction history
         in: query
         name: search
         type: string
-      - description: Page number for paginated history
+      - default: 1
+        description: Page number
         in: query
         name: page
         type: integer
-      - description: Limit per page for paginated history
+      - default: 10
+        description: Limit per page
         in: query
         name: limit
         type: integer
@@ -508,12 +544,12 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
         "401":
           description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "422":
+          description: Unprocessable Entity
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
         "500":
@@ -522,7 +558,7 @@ paths:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
       security:
       - BearerAuth: []
-      summary: Transaction Report
+      summary: Transaction History
       tags:
       - Wallet
   /wallet/transfer:
@@ -544,16 +580,16 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
         "401":
           description: Unauthorized
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "422":
+          description: Unprocessable Entity
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
         "500":

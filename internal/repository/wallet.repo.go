@@ -34,6 +34,7 @@ type IWalletRepository interface {
 	CreateTransfer(ctx context.Context, db DBTX, senderID, receiverID int, amount int64, note string) (int64, error)
 	CreateTopUp(ctx context.Context, db DBTX, receiverID, paymentMethodID int, amount, tax, adminFee int64, note string) (int64, error)
 	GetTransactionReport(ctx context.Context, userID int, start, end, flow string) ([]TransactionReportItem, error)
+	GetTransactionChart(ctx context.Context, userID int, start, end, flow string) ([]TransactionChartItem, error)
 	GetTransactionHistory(ctx context.Context, userID int, search string, limit, offset int) ([]TransactionReportItem, int, error)
 }
 
@@ -178,7 +179,6 @@ func (w *WalletRepository) CreateTopUp(
 	updateReceiver := `
 		UPDATE ewallets
 		SET balance = balance + $1,
-		    income = income + $1,
 		    updated_at = NOW()
 		WHERE user_id = $2
 	`
@@ -268,6 +268,12 @@ type TransactionReportItem struct {
 	Direction   string `json:"direction"`
 }
 
+type TransactionChartItem struct {
+	Date             string `json:"date"`
+	Type             string `json:"type"`
+	TotalTransaction int64  `json:"total_transaction"`
+}
+
 func (w *WalletRepository) GetTransactionReport(
 	ctx context.Context,
 	userID int,
@@ -350,6 +356,66 @@ func (w *WalletRepository) GetTransactionReport(
 			return nil, err
 		}
 
+		result = append(result, item)
+	}
+
+	return result, nil
+}
+
+func (w *WalletRepository) GetTransactionChart(
+	ctx context.Context,
+	userID int,
+	start, end, flow string,
+) ([]TransactionChartItem, error) {
+	query := `
+SELECT
+	TO_CHAR(DATE(created_at), 'YYYY-MM-DD') AS date,
+	direction AS type,
+	SUM(amount) AS total_transaction
+FROM (
+	SELECT t.created_at, t.amount,
+		CASE
+			WHEN td.receiver_id = $1
+			THEN 'income'
+			ELSE 'expense'
+		END as direction
+	FROM transactions t
+	JOIN transfer_details td
+		ON td.transaction_id = t.id
+	WHERE
+		(td.sender_id = $1 OR td.receiver_id = $1)
+		AND t.created_at BETWEEN $2 AND $3
+
+	UNION ALL
+
+	SELECT t.created_at, t.amount,
+		'income' as direction
+	FROM transactions t
+	JOIN top_up_details tu
+		ON tu.transaction_id = t.id
+	WHERE
+		tu.receiver_id = $1
+		AND t.created_at BETWEEN $2 AND $3
+) trx
+WHERE
+	$4 = 'both'
+	OR trx.direction = $4
+GROUP BY DATE(created_at), direction
+ORDER BY DATE(created_at), direction
+`
+
+	rows, err := w.db.Query(ctx, query, userID, start, end, flow)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	result := []TransactionChartItem{}
+	for rows.Next() {
+		var item TransactionChartItem
+		if err := rows.Scan(&item.Date, &item.Type, &item.TotalTransaction); err != nil {
+			return nil, err
+		}
 		result = append(result, item)
 	}
 

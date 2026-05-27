@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"time"
 
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/model"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -13,8 +12,6 @@ type IAuthRepository interface {
 	FindUserByEmail(ctx context.Context, email string) (*model.User, error)
 	IsEmailTaken(ctx context.Context, email string) (bool, error)
 	IsPhoneTaken(ctx context.Context, phoneNumber string) (bool, error)
-	StoreRevokedToken(ctx context.Context, userID int, token string, expiredAt time.Time) error
-	IsTokenRevoked(ctx context.Context, token string) (bool, error)
 }
 
 type AuthRepository struct {
@@ -129,55 +126,5 @@ func (r *AuthRepository) IsPhoneTaken(ctx context.Context, phoneNumber string) (
 
 	var exists bool
 	err := r.db.QueryRow(ctx, query, phoneNumber).Scan(&exists)
-	return exists, err
-}
-
-func (r *AuthRepository) StoreRevokedToken(
-	ctx context.Context,
-	userID int,
-	token string,
-	expiredAt time.Time,
-) error {
-	query := `
-	INSERT INTO revoked_tokens(
-		user_id,
-		token,
-		expired_at
-	)
-	VALUES($1,$2,$3)
-	`
-
-	_, err := r.db.Exec(
-		ctx,
-		query,
-		userID,
-		token,
-		expiredAt,
-	)
-
-	return err
-}
-
-func (r *AuthRepository) IsTokenRevoked(
-	ctx context.Context,
-	token string,
-) (bool, error) {
-	query := `
-	SELECT EXISTS(
-		SELECT 1
-		FROM revoked_tokens
-		WHERE token = $1
-		AND expired_at > NOW()
-	)
-	`
-
-	var exists bool
-
-	err := r.db.QueryRow(
-		ctx,
-		query,
-		token,
-	).Scan(&exists)
-
 	return exists, err
 }

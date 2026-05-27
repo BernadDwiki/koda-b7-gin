@@ -2,14 +2,17 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/dto"
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/hash"
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/repository"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/redis/go-redis/v9"
 )
 
 var (
@@ -30,16 +33,23 @@ type IWalletService interface {
 	CreateTopUp(ctx context.Context, receiverID int, input dto.CreateTopUpRequest) (*dto.CreateTopUpResponse, error)
 	GetTransactionHistory(ctx context.Context, userID int, search string, page, limit int) ([]repository.TransactionReportItem, int, error)
 	GetTransactionReport(ctx context.Context, userID int, start, end, flow string) ([]repository.TransactionReportItem, error)
+	GetTransactionChart(ctx context.Context, userID int, start, end, flow string) ([]dto.TransactionDailyReportItem, error)
 }
 
 type WalletService struct {
 	repo     repository.IWalletRepository
 	userRepo repository.IUserRepository
 	db       *pgxpool.Pool
+	redis    *redis.Client
 }
 
-func NewWalletService(repo repository.IWalletRepository, userRepo repository.IUserRepository, db *pgxpool.Pool) IWalletService {
-	return &WalletService{repo: repo, userRepo: userRepo, db: db}
+func NewWalletService(
+	repo repository.IWalletRepository,
+	userRepo repository.IUserRepository,
+	db *pgxpool.Pool,
+	redisClient *redis.Client,
+) IWalletService {
+	return &WalletService{repo: repo, userRepo: userRepo, db: db, redis: redisClient}
 }
 
 func (w *WalletService) GetDashboard(
@@ -120,6 +130,21 @@ func (w *WalletService) CreateTransfer(
 		return nil, err
 	}
 
+	// invalidate cache for sender and receiver history
+	if w.redis != nil {
+		patternSender := fmt.Sprintf("history:user:%d:*", senderID)
+		senderKeys, _ := w.redis.Keys(ctx, patternSender).Result()
+		if len(senderKeys) > 0 {
+			w.redis.Del(ctx, senderKeys...)
+		}
+
+		patternReceiver := fmt.Sprintf("history:user:%d:*", input.ReceiverID)
+		receiverKeys, _ := w.redis.Keys(ctx, patternReceiver).Result()
+		if len(receiverKeys) > 0 {
+			w.redis.Del(ctx, receiverKeys...)
+		}
+	}
+
 	return &dto.CreateTransferResponse{
 		TransactionID: transactionID,
 		Status:        "success",
@@ -183,13 +208,21 @@ func (w *WalletService) CreateTopUp(
 		return nil, err
 	}
 
+	// invalidate cache for receiver history
+	if w.redis != nil {
+		pattern := fmt.Sprintf("history:user:%d:*", receiverID)
+		keys, _ := w.redis.Keys(ctx, pattern).Result()
+		if len(keys) > 0 {
+			w.redis.Del(ctx, keys...)
+		}
+	}
+
 	return &dto.CreateTopUpResponse{
 		TransactionID: transactionID,
 		Status:        "success",
 		Message:       "top up completed",
 		Amount:        input.Amount,
-		TaxPercent:    paymentMethodConfig.TaxPercent,
-		TaxAmount:     taxAmount,
+		TaxPercent:    float64(paymentMethodConfig.TaxPercent) / 100,
 		AdminFee:      paymentMethodConfig.AdminFee,
 		Total:         total,
 	}, nil
@@ -201,6 +234,28 @@ func (w *WalletService) GetTransactionReport(
 	start, end, flow string,
 ) ([]repository.TransactionReportItem, error) {
 	return w.repo.GetTransactionReport(ctx, userID, start, end, flow)
+}
+
+func (w *WalletService) GetTransactionChart(
+	ctx context.Context,
+	userID int,
+	start, end, flow string,
+) ([]dto.TransactionDailyReportItem, error) {
+	items, err := w.repo.GetTransactionChart(ctx, userID, start, end, flow)
+	if err != nil {
+		return nil, err
+	}
+
+	result := make([]dto.TransactionDailyReportItem, len(items))
+	for i, item := range items {
+		result[i] = dto.TransactionDailyReportItem{
+			Date:             item.Date,
+			Type:             item.Type,
+			TotalTransaction: item.TotalTransaction,
+		}
+	}
+
+	return result, nil
 }
 
 func (w *WalletService) GetTransactionHistory(
@@ -216,11 +271,51 @@ func (w *WalletService) GetTransactionHistory(
 		limit = 10
 	}
 
+	cacheKey := fmt.Sprintf(
+		"history:user:%d:search:%s:page:%d:limit:%d",
+		userID,
+		search,
+		page,
+		limit,
+	)
+
+	// CACHE HIT
+	if w.redis != nil {
+		cachedData, err := w.redis.Get(ctx, cacheKey).Result()
+		if err == nil {
+			var response struct {
+				Data  []repository.TransactionReportItem `json:"data"`
+				Total int                                `json:"total"`
+			}
+
+			if json.Unmarshal([]byte(cachedData), &response) == nil {
+				fmt.Println("CACHE HIT")
+				return response.Data, response.Total, nil
+			}
+		}
+	}
+
+	fmt.Println("CACHE MISS")
+
 	offset := (page - 1) * limit
 
 	items, total, err := w.repo.GetTransactionHistory(ctx, userID, search, limit, offset)
 	if err != nil {
 		return nil, 0, err
+	}
+
+	// SAVE CACHE
+	if w.redis != nil {
+		cachePayload := struct {
+			Data  []repository.TransactionReportItem `json:"data"`
+			Total int                                `json:"total"`
+		}{
+			Data:  items,
+			Total: total,
+		}
+
+		jsonData, _ := json.Marshal(cachePayload)
+		w.redis.Set(ctx, cacheKey, jsonData, 5*time.Minute)
 	}
 
 	return items, total, nil

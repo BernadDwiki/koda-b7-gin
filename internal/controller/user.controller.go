@@ -76,7 +76,7 @@ func (u *UserController) GetProfile(
 // @Security BearerAuth
 // @Param request body dto.SetPinRequest true "Set PIN Request"
 // @Success 200 {object} dto.Response
-// @Failure 400 {object} dto.Response
+// @Failure 422 {object} dto.Response
 // @Failure 401 {object} dto.Response
 // @Router /user/set-pin [post]
 func (u *UserController) SetPin(
@@ -96,7 +96,7 @@ func (u *UserController) SetPin(
 	var body dto.SetPinRequest
 
 	if err := ctx.ShouldBindJSON(&body); err != nil {
-		ctx.JSON(http.StatusBadRequest, dto.Response{
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{
 			Success: false,
 			Message: errText.GetValidationErrorMessage(err),
 		})
@@ -110,7 +110,7 @@ func (u *UserController) SetPin(
 	)
 
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, dto.Response{
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{
 			Success: false,
 			Message: err.Error(),
 		})
@@ -132,7 +132,7 @@ func (u *UserController) SetPin(
 // @Security BearerAuth
 // @Param request body dto.CheckPinRequest true "Check PIN Request"
 // @Success 200 {object} dto.Response
-// @Failure 400 {object} dto.Response
+// @Failure 422 {object} dto.Response
 // @Failure 401 {object} dto.Response
 // @Router /user/check-pin [post]
 func (u *UserController) CheckPin(
@@ -151,7 +151,7 @@ func (u *UserController) CheckPin(
 
 	var body dto.CheckPinRequest
 	if err := ctx.ShouldBindJSON(&body); err != nil {
-		ctx.JSON(http.StatusBadRequest, dto.Response{
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{
 			Success: false,
 			Message: errText.GetValidationErrorMessage(err),
 		})
@@ -181,7 +181,7 @@ func (u *UserController) CheckPin(
 // @Security BearerAuth
 // @Param request body dto.EditPinRequest true "Edit PIN Request"
 // @Success 200 {object} dto.Response
-// @Failure 400 {object} dto.Response
+// @Failure 422 {object} dto.Response
 // @Failure 401 {object} dto.Response
 // @Router /user/edit-pin [put]
 func (u *UserController) EditPin(
@@ -200,7 +200,7 @@ func (u *UserController) EditPin(
 
 	var body dto.EditPinRequest
 	if err := ctx.ShouldBindJSON(&body); err != nil {
-		ctx.JSON(http.StatusBadRequest, dto.Response{
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{
 			Success: false,
 			Message: errText.GetValidationErrorMessage(err),
 		})
@@ -208,7 +208,7 @@ func (u *UserController) EditPin(
 	}
 
 	if err := u.service.EditPin(ctx.Request.Context(), claims.UserID, body); err != nil {
-		ctx.JSON(http.StatusBadRequest, dto.Response{Success: false, Message: err.Error()})
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{Success: false, Message: err.Error()})
 		return
 	}
 
@@ -224,7 +224,7 @@ func (u *UserController) EditPin(
 // @Security BearerAuth
 // @Param request body dto.ChangePasswordRequest true "Change Password Request"
 // @Success 200 {object} dto.Response
-// @Failure 400 {object} dto.Response
+// @Failure 422 {object} dto.Response
 // @Failure 401 {object} dto.Response
 // @Router /user/password [put]
 func (u *UserController) ChangePassword(
@@ -243,7 +243,7 @@ func (u *UserController) ChangePassword(
 
 	var body dto.ChangePasswordRequest
 	if err := ctx.ShouldBindJSON(&body); err != nil {
-		ctx.JSON(http.StatusBadRequest, dto.Response{
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{
 			Success: false,
 			Message: errText.GetValidationErrorMessage(err),
 		})
@@ -251,7 +251,7 @@ func (u *UserController) ChangePassword(
 	}
 
 	if err := u.service.ChangePassword(ctx.Request.Context(), claims.UserID, body); err != nil {
-		ctx.JSON(http.StatusBadRequest, dto.Response{Success: false, Message: err.Error()})
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{Success: false, Message: err.Error()})
 		return
 	}
 
@@ -269,7 +269,7 @@ func (u *UserController) ChangePassword(
 // @Param page query int false "Page number"
 // @Param limit query int false "Limit per page"
 // @Success 200 {object} dto.Response
-// @Failure 400 {object} dto.Response
+// @Failure 422 {object} dto.Response
 // @Failure 401 {object} dto.Response
 // @Router /user/receivers [get]
 func (u *UserController) FindReceivers(
@@ -292,13 +292,13 @@ func (u *UserController) FindReceivers(
 
 	page, err := strconv.Atoi(pageQ)
 	if err != nil || page < 1 {
-		ctx.JSON(http.StatusBadRequest, dto.Response{Success: false, Message: "page must be a positive integer"})
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{Success: false, Message: "page must be a positive integer"})
 		return
 	}
 
 	limit, err := strconv.Atoi(limitQ)
 	if err != nil || limit < 1 || limit > 100 {
-		ctx.JSON(http.StatusBadRequest, dto.Response{Success: false, Message: "limit must be a positive integer between 1 and 100"})
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{Success: false, Message: "limit must be a positive integer between 1 and 100"})
 		return
 	}
 
@@ -322,10 +322,10 @@ func (u *UserController) FindReceivers(
 // @Param phone_number formData string false "Phone Number"
 // @Param profile_picture formData file false "Profile Picture"
 // @Success 200 {object} dto.Response
-// @Failure 400 {object} dto.Response
+// @Failure 422 {object} dto.Response
 // @Failure 401 {object} dto.Response
 // @Failure 500 {object} dto.Response
-// @Router /user/profile [put]
+// @Router /user/profile [patch]
 func (u *UserController) EditProfile(
 	ctx *gin.Context,
 ) {
@@ -342,13 +342,13 @@ func (u *UserController) EditProfile(
 
 	var body dto.EditProfileRequest
 	if err := ctx.ShouldBindWith(&body, binding.FormMultipart); err != nil {
-		ctx.JSON(http.StatusBadRequest, dto.Response{Success: false, Message: errText.GetValidationErrorMessage(err)})
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{Success: false, Message: errText.GetValidationErrorMessage(err)})
 		return
 	}
 
 	profile, err := u.service.UpdateProfile(ctx.Request.Context(), claims.UserID, body)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, dto.Response{Success: false, Message: err.Error()})
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{Success: false, Message: err.Error()})
 		return
 	}
 

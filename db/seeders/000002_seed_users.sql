@@ -1,0 +1,33 @@
+INSERT INTO users (
+    name,
+    email,
+    password,
+    pin,
+    picture,
+    phone_number
+)
+VALUES
+(
+    'Admin',
+    'admin@mail.com',
+    '$2a$10$7EqJtq98hPqEX7fNZaFWoOeQmQ4V6bA6M2n5M9X3Qk4nD7h2B8XgS',
+    '123456',
+    'admin.jpg',
+    '081111111111'
+),
+(
+    'Dwiki',
+    'dwiki@mail.com',
+    '$2a$10$7EqJtq98hPqEX7fNZaFWoOeQmQ4V6bA6M2n5M9X3Qk4nD7h2B8XgS',
+    '111111',
+    'dwiki.jpg',
+    '082222222222'
+),
+(
+    'Budi',
+    'budi@mail.com',
+    '$2a$10$7EqJtq98hPqEX7fNZaFWoOeQmQ4V6bA6M2n5M9X3Qk4nD7h2B8XgS',
+    '222222',
+    'budi.jpg',
+    '083333333333'
+);

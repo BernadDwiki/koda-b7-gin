@@ -1,0 +1,22 @@
+INSERT INTO top_up_details (
+    transaction_id,
+    receiver_id,
+    payment_method_id,
+    tax,
+    admin_fee
+)
+VALUES
+(
+    3,
+    1,
+    1,
+    15000,
+    1500
+),
+(
+    4,
+    2,
+    2,
+    4500,
+    1000
+);

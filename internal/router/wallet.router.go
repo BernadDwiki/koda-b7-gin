@@ -7,7 +7,8 @@ import (
 
 func RegisterWalletRoutes(r gin.IRouter, walletController *controller.WalletController) {
 	r.GET("/wallet/dashboard", walletController.Dashboard)
-	r.GET("/wallet/transactions", walletController.TransactionsReport)
+	r.GET("/wallet/transactions", walletController.TransactionHistory)
+	r.GET("/wallet/transaction-report", walletController.TransactionReport)
 	r.POST("/wallet/transfer", walletController.CreateTransfer)
 	r.POST("/wallet/top-up", walletController.CreateTopUp)
 }

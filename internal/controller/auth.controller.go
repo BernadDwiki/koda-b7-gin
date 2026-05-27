@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"net/http"
 	"strings"
 
@@ -29,7 +30,8 @@ func NewAuthController(
 // @Produce json
 // @Param request body dto.RegisterRequest true "Register Request"
 // @Success 201 {object} dto.Response
-// @Failure 400 {object} dto.Response
+// @Failure 422 {object} dto.Response
+// @Failure 409 {object} dto.Response
 // @Router /auth/register [post]
 func (a *AuthController) Register(
 	ctx *gin.Context,
@@ -37,7 +39,7 @@ func (a *AuthController) Register(
 	var body dto.RegisterRequest
 
 	if err := ctx.ShouldBindJSON(&body); err != nil {
-		ctx.JSON(http.StatusBadRequest, dto.Response{
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{
 			Success: false,
 			Message: errText.GetValidationErrorMessage(err),
 		})
@@ -50,7 +52,14 @@ func (a *AuthController) Register(
 	)
 
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, dto.Response{
+		if errors.Is(err, service.ErrEmailAlreadyRegistered) {
+			ctx.JSON(http.StatusConflict, dto.Response{
+				Success: false,
+				Message: err.Error(),
+			})
+			return
+		}
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{
 			Success: false,
 			Message: err.Error(),
 		})
@@ -75,7 +84,7 @@ func (a *AuthController) Register(
 // @Produce json
 // @Param request body dto.LoginRequest true "Login Request"
 // @Success 200 {object} dto.Response
-// @Failure 400 {object} dto.Response
+// @Failure 422 {object} dto.Response
 // @Failure 401 {object} dto.Response
 // @Router /auth/login [post]
 func (a *AuthController) Login(
@@ -84,7 +93,7 @@ func (a *AuthController) Login(
 	var body dto.LoginRequest
 
 	if err := ctx.ShouldBindJSON(&body); err != nil {
-		ctx.JSON(http.StatusBadRequest, dto.Response{
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{
 			Success: false,
 			Message: errText.GetValidationErrorMessage(err),
 		})

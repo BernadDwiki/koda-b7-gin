@@ -10,6 +10,11 @@ import (
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/jwt"
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/model"
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/repository"
+	"github.com/redis/go-redis/v9"
+)
+
+var (
+	ErrEmailAlreadyRegistered = errors.New("email already registered")
 )
 
 type IAuthService interface {
@@ -24,11 +29,15 @@ type IAuthService interface {
 }
 
 type AuthService struct {
-	repo repository.IAuthRepository
+	repo  repository.IAuthRepository
+	redis *redis.Client
 }
 
-func NewAuthService(repo repository.IAuthRepository) IAuthService {
-	return &AuthService{repo}
+func NewAuthService(
+	repo repository.IAuthRepository,
+	redisClient *redis.Client,
+) IAuthService {
+	return &AuthService{repo: repo, redis: redisClient}
 }
 
 func (s *AuthService) Register(
@@ -40,7 +49,7 @@ func (s *AuthService) Register(
 		return nil, err
 	}
 	if emailTaken {
-		return nil, errors.New("email already registered")
+		return nil, ErrEmailAlreadyRegistered
 	}
 
 	passwordHash, err := hash.GenerateHash(req.Password)
@@ -100,10 +109,15 @@ func (s *AuthService) Logout(
 	token string,
 	expiredAt time.Time,
 ) error {
-	return s.repo.StoreRevokedToken(
+	ttl := time.Until(expiredAt)
+	if ttl <= 0 {
+		ttl = time.Second
+	}
+
+	return s.redis.Set(
 		ctx,
-		userID,
-		token,
-		expiredAt,
-	)
+		"blacklist:"+token,
+		"revoked",
+		ttl,
+	).Err()
 }

@@ -34,9 +34,12 @@ func main() {
 	}
 	defer db.Close()
 
+	redisClient := config.NewRedis()
+	defer redisClient.Close()
+
 	r := gin.Default()
 
-	router.SetupRouter(r, db)
+	router.SetupRouter(r, db, redisClient)
 
 	port := os.Getenv("APP_PORT")
 
