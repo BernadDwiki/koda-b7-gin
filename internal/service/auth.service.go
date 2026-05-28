@@ -10,6 +10,7 @@ import (
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/jwt"
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/model"
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/repository"
+	"github.com/google/uuid"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -20,6 +21,14 @@ var (
 type IAuthService interface {
 	Register(ctx context.Context, req dto.RegisterRequest) (*model.User, error)
 	Login(ctx context.Context, req dto.LoginRequest) (*dto.LoginResponse, error)
+	ForgotPassword(
+		ctx context.Context,
+		req dto.ForgotPasswordRequest,
+	) (*dto.ForgotPasswordResponse, error)
+	ResetPassword(
+		ctx context.Context,
+		req dto.ResetPasswordRequest,
+	) error
 	Logout(
 		ctx context.Context,
 		userID int,
@@ -101,6 +110,75 @@ func (s *AuthService) Login(
 		Token:  token,
 		HasPin: hasPin,
 	}, nil
+}
+
+func (s *AuthService) ForgotPassword(
+	ctx context.Context,
+	req dto.ForgotPasswordRequest,
+) (*dto.ForgotPasswordResponse, error) {
+	user, err := s.repo.FindUserByEmail(
+		ctx,
+		req.Email,
+	)
+
+	if err != nil {
+		return nil, errors.New("email not found")
+	}
+
+	resetToken := uuid.NewString()
+
+	err = s.redis.Set(
+		ctx,
+		"forgot-password:"+resetToken,
+		user.ID,
+		15*time.Minute,
+	).Err()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto.ForgotPasswordResponse{
+		ResetToken: resetToken,
+	}, nil
+}
+
+func (s *AuthService) ResetPassword(
+	ctx context.Context,
+	req dto.ResetPasswordRequest,
+) error {
+	key := "forgot-password:" + req.Token
+
+	userID, err := s.redis.Get(
+		ctx,
+		key,
+	).Int()
+
+	if err != nil {
+		return errors.New("invalid or expired token")
+	}
+
+	passwordHash, err := hash.GenerateHash(
+		req.NewPassword,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	err = s.repo.UpdatePassword(
+		ctx,
+		userID,
+		passwordHash,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	_ = s.redis.Del(ctx, key)
+
+	return nil
 }
 
 func (s *AuthService) Logout(

@@ -29,7 +29,7 @@ func NewAuthController(
 // @Accept json
 // @Produce json
 // @Param request body dto.RegisterRequest true "Register Request"
-// @Success 201 {object} dto.Response
+// @Success 200 {object} dto.Response
 // @Failure 422 {object} dto.Response
 // @Failure 409 {object} dto.Response
 // @Router /auth/register [post]
@@ -66,13 +66,10 @@ func (a *AuthController) Register(
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, dto.Response{
+	_ = user
+	ctx.JSON(http.StatusOK, dto.Response{
 		Success: true,
 		Message: "register success",
-		Data: dto.RegisterResponse{
-			ID:    user.ID,
-			Email: user.Email,
-		},
 	})
 }
 
@@ -117,6 +114,93 @@ func (a *AuthController) Login(
 		Success: true,
 		Message: "login success",
 		Data:    result,
+	})
+}
+
+// ForgotPassword godoc
+// @Summary Forgot Password
+// @Description Generate a password reset token and return it in the response.
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param request body dto.ForgotPasswordRequest true "Forgot Password Request"
+// @Success 200 {object} dto.Response
+// @Failure 422 {object} dto.Response
+// @Failure 404 {object} dto.Response
+// @Router /auth/forgot-password [post]
+func (a *AuthController) ForgotPassword(
+	ctx *gin.Context,
+) {
+	var body dto.ForgotPasswordRequest
+
+	if err := ctx.ShouldBindJSON(&body); err != nil {
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{
+			Success: false,
+			Message: errText.GetValidationErrorMessage(err),
+		})
+		return
+	}
+
+	result, err := a.service.ForgotPassword(
+		ctx.Request.Context(),
+		body,
+	)
+
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, dto.Response{
+			Success: false,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, dto.Response{
+		Success: true,
+		Message: "reset password token generated",
+		Data:    result,
+	})
+}
+
+// ResetPassword godoc
+// @Summary Reset Password
+// @Description Reset password using a valid reset token.
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param request body dto.ResetPasswordRequest true "Reset Password Request"
+// @Success 200 {object} dto.Response
+// @Failure 422 {object} dto.Response
+// @Failure 400 {object} dto.Response
+// @Router /auth/reset-password [post]
+func (a *AuthController) ResetPassword(
+	ctx *gin.Context,
+) {
+	var body dto.ResetPasswordRequest
+
+	if err := ctx.ShouldBindJSON(&body); err != nil {
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{
+			Success: false,
+			Message: errText.GetValidationErrorMessage(err),
+		})
+		return
+	}
+
+	err := a.service.ResetPassword(
+		ctx.Request.Context(),
+		body,
+	)
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, dto.Response{
+			Success: false,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, dto.Response{
+		Success: true,
+		Message: "password reset success",
 	})
 }
 

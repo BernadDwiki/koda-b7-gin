@@ -25,5 +25,8 @@ func RegisterAuthRouter(r gin.IRouter, db *pgxpool.Pool, redisClient *redis.Clie
 	{
 		auth.POST("/register", authController.Register)
 		auth.POST("/login", authController.Login)
+
+		auth.POST("/forgot-password", authController.ForgotPassword)
+		auth.POST("/reset-password", authController.ResetPassword)
 	}
 }

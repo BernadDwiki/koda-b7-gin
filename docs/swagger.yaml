@@ -56,6 +56,13 @@ definitions:
     - current_pin
     - new_pin
     type: object
+  github_com_bernaddwiki_koda-b7-weekly10_internal_dto.ForgotPasswordRequest:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
   github_com_bernaddwiki_koda-b7-weekly10_internal_dto.LoginRequest:
     properties:
       email:
@@ -76,6 +83,17 @@ definitions:
     required:
     - email
     - password
+    type: object
+  github_com_bernaddwiki_koda-b7-weekly10_internal_dto.ResetPasswordRequest:
+    properties:
+      new_password:
+        minLength: 8
+        type: string
+      token:
+        type: string
+    required:
+    - new_password
+    - token
     type: object
   github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response:
     properties:
@@ -99,6 +117,36 @@ info:
   title: E-Wallet API
   version: "1.0"
 paths:
+  /auth/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: Generate a password reset token and return it in the response.
+      parameters:
+      - description: Forgot Password Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.ForgotPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      summary: Forgot Password
+      tags:
+      - Auth
   /auth/login:
     post:
       consumes:
@@ -169,8 +217,8 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
-          description: Created
+        "200":
+          description: OK
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
         "409":
@@ -182,6 +230,36 @@ paths:
           schema:
             $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
       summary: Register User
+      tags:
+      - Auth
+  /auth/reset-password:
+    post:
+      consumes:
+      - application/json
+      description: Reset password using a valid reset token.
+      parameters:
+      - description: Reset Password Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.ResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response'
+      summary: Reset Password
       tags:
       - Auth
   /user/check-pin:

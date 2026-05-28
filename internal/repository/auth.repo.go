@@ -12,6 +12,7 @@ type IAuthRepository interface {
 	FindUserByEmail(ctx context.Context, email string) (*model.User, error)
 	IsEmailTaken(ctx context.Context, email string) (bool, error)
 	IsPhoneTaken(ctx context.Context, phoneNumber string) (bool, error)
+	UpdatePassword(ctx context.Context, userID int, password string) error
 }
 
 type AuthRepository struct {
@@ -127,4 +128,25 @@ func (r *AuthRepository) IsPhoneTaken(ctx context.Context, phoneNumber string) (
 	var exists bool
 	err := r.db.QueryRow(ctx, query, phoneNumber).Scan(&exists)
 	return exists, err
+}
+
+func (r *AuthRepository) UpdatePassword(
+	ctx context.Context,
+	userID int,
+	password string,
+) error {
+	query := `
+	UPDATE users
+	SET password = $1
+	WHERE id = $2
+	`
+
+	_, err := r.db.Exec(
+		ctx,
+		query,
+		password,
+		userID,
+	)
+
+	return err
 }
