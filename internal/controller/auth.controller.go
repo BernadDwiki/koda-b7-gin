@@ -214,7 +214,7 @@ func (a *AuthController) ResetPassword(
 // @Success 200 {object} dto.Response
 // @Failure 401 {object} dto.Response
 // @Failure 500 {object} dto.Response
-// @Router /auth/logout [post]
+// @Router /auth/logout [DELETE]
 func (a *AuthController) Logout(
 	ctx *gin.Context,
 ) {

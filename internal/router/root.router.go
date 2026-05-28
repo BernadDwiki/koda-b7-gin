@@ -22,7 +22,7 @@ func RegisterRootRouter(r gin.IRouter, redisClient *redis.Client) {
 	protected := r.Group("/")
 	protected.Use(middleware.AuthMiddleware(authRepository, redisClient))
 	{
-		protected.POST("auth/logout", authController.Logout)
+		protected.DELETE("auth/logout", authController.Logout)
 		RegisterWalletRoutes(protected, walletController)
 	}
 }

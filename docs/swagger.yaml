@@ -178,7 +178,7 @@ paths:
       tags:
       - Auth
   /auth/logout:
-    post:
+    delete:
       consumes:
       - application/json
       description: Invalidate current JWT token
