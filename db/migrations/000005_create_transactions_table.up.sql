@@ -1,3 +1,14 @@
+CREATE TYPE transaction_type AS ENUM (
+    'transfer',
+    'top_up'
+);
+
+CREATE TYPE transaction_status AS ENUM (
+    'pending',
+    'success',
+    'failed'
+);
+
 CREATE TABLE transactions (
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 
