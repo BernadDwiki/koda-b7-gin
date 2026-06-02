@@ -259,13 +259,15 @@ func (w *WalletRepository) GetPaymentMethodTopUpConfig(
 }
 
 type TransactionReportItem struct {
-	ID          int64  `json:"id"`
-	Amount      int64  `json:"amount"`
-	Type        string `json:"type"`
-	Description string `json:"description"`
-	Status      string `json:"status"`
-	CreatedAt   string `json:"created_at"`
-	Direction   string `json:"direction"`
+	ID          int64   `json:"id"`
+	Amount      int64   `json:"amount"`
+	Type        string  `json:"type"`
+	Description string  `json:"description"`
+	Status      string  `json:"status"`
+	CreatedAt   string  `json:"created_at"`
+	Direction   string  `json:"direction"`
+	Name        *string `json:"name"`
+	PhoneNumber *string `json:"phone_number"`
 }
 
 type TransactionChartItem struct {
@@ -443,10 +445,24 @@ SELECT COUNT(*) FROM (
 			WHEN td.receiver_id = $1
 			THEN 'income'
 			ELSE 'expense'
-		END as direction
+		END as direction,
+		CASE
+			WHEN td.receiver_id = $1
+			THEN sender.name
+			ELSE receiver.name
+		END as name,
+		CASE
+			WHEN td.receiver_id = $1
+			THEN sender.phone_number
+			ELSE receiver.phone_number
+		END as phone_number
 	FROM transactions t
 	JOIN transfer_details td
 		ON td.transaction_id = t.id
+	JOIN users sender
+		ON sender.id = td.sender_id
+	JOIN users receiver
+		ON receiver.id = td.receiver_id
 	WHERE
 		(td.sender_id = $1 OR td.receiver_id = $1)
 
@@ -459,14 +475,22 @@ SELECT COUNT(*) FROM (
 		t.note,
 		t.status::text,
 		to_char(t.created_at, 'YYYY-MM-DD"T"HH24:MI:SS"Z"') as created_at,
-		'income' as direction
+		'income' as direction,
+		u.name,
+		u.phone_number
 	FROM transactions t
 	JOIN top_up_details tu
 		ON tu.transaction_id = t.id
+	JOIN users u
+		ON u.id = tu.receiver_id
 	WHERE
 		tu.receiver_id = $1
 ) trx
-WHERE ($2 = '' OR lower(trx.note) LIKE '%' || lower($2) || '%')
+WHERE (
+	$2 = ''
+	OR trx.name ILIKE '%' || $2 || '%'
+	OR trx.phone_number ILIKE '%' || $2 || '%'
+)
 `
 
 	var total int
@@ -475,7 +499,17 @@ WHERE ($2 = '' OR lower(trx.note) LIKE '%' || lower($2) || '%')
 	}
 
 	query := `
-SELECT * FROM (
+SELECT
+	trx.id,
+	trx.amount,
+	trx.transaction_type,
+	trx.note,
+	trx.status,
+	trx.created_at,
+	trx.direction,
+	trx.name,
+	trx.phone_number
+FROM (
 	SELECT
 		t.id,
 		t.amount,
@@ -487,10 +521,24 @@ SELECT * FROM (
 			WHEN td.receiver_id = $1
 			THEN 'income'
 			ELSE 'expense'
-		END as direction
+		END as direction,
+		CASE
+			WHEN td.receiver_id = $1
+			THEN sender.name
+			ELSE receiver.name
+		END as name,
+		CASE
+			WHEN td.receiver_id = $1
+			THEN sender.phone_number
+			ELSE receiver.phone_number
+		END as phone_number
 	FROM transactions t
 	JOIN transfer_details td
 		ON td.transaction_id = t.id
+	JOIN users sender
+		ON sender.id = td.sender_id
+	JOIN users receiver
+		ON receiver.id = td.receiver_id
 	WHERE
 		(td.sender_id = $1 OR td.receiver_id = $1)
 
@@ -503,14 +551,22 @@ SELECT * FROM (
 		t.note,
 		t.status::text,
 		to_char(t.created_at, 'YYYY-MM-DD"T"HH24:MI:SS"Z"') as created_at,
-		'income' as direction
+		'income' as direction,
+		u.name,
+		u.phone_number
 	FROM transactions t
 	JOIN top_up_details tu
 		ON tu.transaction_id = t.id
+	JOIN users u
+		ON u.id = tu.receiver_id
 	WHERE
 		tu.receiver_id = $1
 ) trx
-WHERE ($2 = '' OR lower(trx.note) LIKE '%' || lower($2) || '%')
+WHERE (
+	$2 = ''
+	OR trx.name ILIKE '%' || $2 || '%'
+	OR trx.phone_number ILIKE '%' || $2 || '%'
+)
 ORDER BY created_at DESC
 LIMIT $3 OFFSET $4
 `
@@ -522,7 +578,6 @@ LIMIT $3 OFFSET $4
 	defer rows.Close()
 
 	result := []TransactionReportItem{}
-
 	for rows.Next() {
 		var item TransactionReportItem
 		if err := rows.Scan(
@@ -533,6 +588,8 @@ LIMIT $3 OFFSET $4
 			&item.Status,
 			&item.CreatedAt,
 			&item.Direction,
+			&item.Name,
+			&item.PhoneNumber,
 		); err != nil {
 			return nil, 0, err
 		}

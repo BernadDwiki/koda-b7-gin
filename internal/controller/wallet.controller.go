@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/dto"
+	"github.com/bernaddwiki/koda-b7-weekly10/internal/errText"
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/jwt"
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/service"
 	"github.com/gin-gonic/gin"
@@ -75,7 +76,7 @@ func (w *WalletController) CreateTransfer(ctx *gin.Context) {
 
 	var request dto.CreateTransferRequest
 	if err := ctx.ShouldBindJSON(&request); err != nil {
-		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{Success: false, Message: err.Error()})
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{Success: false, Message: errText.GetValidationErrorMessage(err)})
 		return
 	}
 
@@ -132,7 +133,7 @@ func (w *WalletController) CreateTopUp(ctx *gin.Context) {
 
 	var request dto.CreateTopUpRequest
 	if err := ctx.ShouldBindJSON(&request); err != nil {
-		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{Success: false, Message: err.Error()})
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{Success: false, Message: errText.GetValidationErrorMessage(err)})
 		return
 	}
 

@@ -17,7 +17,7 @@ func GenerateToken(
 	userID int,
 	email string,
 ) (string, error) {
-	expiredAt := time.Now().Add(24 * time.Hour)
+	expiredAt := time.Now().Add(1 * time.Hour)
 
 	claims := JWTClaims{
 		UserID: userID,

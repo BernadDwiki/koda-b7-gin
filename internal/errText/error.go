@@ -10,31 +10,53 @@ func GetValidationErrorMessage(err error) string {
 			return parseValidationError(validationErrors[0])
 		}
 	}
-	return err.Error()
+	// fallback generic message for non-validator errors
+	return "Data tidak valid"
 }
 
 func parseValidationError(err validator.FieldError) string {
 	field := err.Field()
 	tag := err.Tag()
 
+	// specific field messages (Indonesian)
+	switch field {
+	case "Amount":
+		switch tag {
+		case "required":
+			return "Nominal top up wajib diisi"
+		case "gt":
+			return "Nominal top up harus lebih besar dari 0"
+		case "gte":
+			return "Minimal top up adalah Rp" + err.Param()
+		case "min":
+			return "Nominal top up harus minimal " + err.Param()
+		default:
+			return "Nominal top up tidak valid"
+		}
+
+	case "PaymentMethodID":
+		return "Metode pembayaran wajib dipilih"
+	}
+
+	// generic tag-based messages (Indonesian)
 	switch tag {
 	case "required":
-		return field + " is required"
+		return field + " wajib diisi"
 	case "email":
-		return field + " must be a valid email"
+		return field + " harus berupa email yang valid"
 	case "min":
-		return field + " must be at least " + err.Param() + " characters"
+		return field + " harus minimal " + err.Param() + " karakter"
 	case "max":
-		return field + " must be at most " + err.Param() + " characters"
+		return field + " harus maksimal " + err.Param() + " karakter"
 	case "len":
-		return field + " must be exactly " + err.Param() + " characters"
+		return field + " harus tepat " + err.Param() + " karakter"
 	case "numeric":
-		return field + " must contain only numbers"
+		return field + " harus berupa angka"
 	case "eqfield":
-		return field + " must match " + err.Param()
+		return field + " harus sama dengan " + err.Param()
 	case "unique":
-		return field + " already exists"
+		return field + " sudah ada"
 	default:
-		return "invalid " + field
+		return "Data tidak valid"
 	}
 }

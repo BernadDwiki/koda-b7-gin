@@ -160,7 +160,6 @@ func (u *UserRepository) FindReceivers(
 	WHERE id != $1
 	AND (
 		name ILIKE $2
-		OR email ILIKE $2
 		OR COALESCE(phone_number, '') ILIKE $2
 	)
 	`
@@ -176,7 +175,6 @@ func (u *UserRepository) FindReceivers(
 	WHERE id != $1
 	AND (
 		name ILIKE $2
-		OR email ILIKE $2
 		OR COALESCE(phone_number, '') ILIKE $2
 	)
 	ORDER BY name ASC

@@ -428,7 +428,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Search for receiver users by name or email
+      description: Search for receiver users by name or phone number
       parameters:
       - description: Search term
         in: query

@@ -260,7 +260,7 @@ func (u *UserController) ChangePassword(
 
 // FindReceivers godoc
 // @Summary Find Receivers
-// @Description Search for receiver users by name or email
+// @Description Search for receiver users by name or phone number
 // @Tags User
 // @Accept json
 // @Produce json

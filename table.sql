@@ -144,3 +144,4 @@ CREATE TABLE revoked_tokens (
         REFERENCES users(id)
         ON DELETE CASCADE
 );
+

@@ -503,7 +503,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Search for receiver users by name or email",
+                "description": "Search for receiver users by name or phone number",
                 "consumes": [
                     "application/json"
                 ],

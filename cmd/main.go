@@ -23,10 +23,7 @@ import (
 // @in header
 // @name Authorization
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("failed load env")
-	}
+	_ = godotenv.Load()
 
 	db, err := config.ConnectDB()
 	if err != nil {
@@ -38,6 +35,12 @@ func main() {
 	defer redisClient.Close()
 
 	r := gin.Default()
+
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "OK",
+		})
+	})
 
 	router.SetupRouter(r, db, redisClient)
 
