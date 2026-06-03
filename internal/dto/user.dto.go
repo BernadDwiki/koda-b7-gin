@@ -35,9 +35,9 @@ type CheckPinRequest struct {
 }
 
 type EditProfileRequest struct {
-	Name           *string               `form:"name" binding:"omitempty,min=1,max=255"`
+	Name           string                `form:"name" binding:"-"`
 	ProfilePicture *multipart.FileHeader `form:"profile_picture" binding:"-"`
-	PhoneNumber    *string               `form:"phone_number" binding:"omitempty"`
+	PhoneNumber    string                `form:"phone_number" binding:"-"`
 }
 
 type ChangePasswordRequest struct {

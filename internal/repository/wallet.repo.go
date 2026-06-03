@@ -387,17 +387,6 @@ FROM (
 	WHERE
 		(td.sender_id = $1 OR td.receiver_id = $1)
 		AND t.created_at BETWEEN $2 AND $3
-
-	UNION ALL
-
-	SELECT t.created_at, t.amount,
-		'income' as direction
-	FROM transactions t
-	JOIN top_up_details tu
-		ON tu.transaction_id = t.id
-	WHERE
-		tu.receiver_id = $1
-		AND t.created_at BETWEEN $2 AND $3
 ) trx
 WHERE
 	$4 = 'both'

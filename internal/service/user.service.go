@@ -215,7 +215,8 @@ func (u *UserService) UpdateProfile(
 		pictureURL = "/img/" + fileName
 	}
 
-	if input.Name == nil && input.PhoneNumber == nil && pictureURL == "" {
+	// Check if there's anything to update
+	if input.Name == "" && input.PhoneNumber == "" && pictureURL == "" {
 		user, err := u.repo.GetProfile(ctx, userID)
 		if err != nil {
 			return nil, err
@@ -235,14 +236,9 @@ func (u *UserService) UpdateProfile(
 		}, nil
 	}
 
-	name := ""
-	updatedPhone := ""
-	if input.Name != nil {
-		name = *input.Name
-	}
-	if input.PhoneNumber != nil {
-		updatedPhone = *input.PhoneNumber
-	}
+	// Prepare update values - use input values or empty string if not provided
+	name := input.Name
+	updatedPhone := input.PhoneNumber
 
 	if err := u.repo.UpdateProfile(ctx, userID, name, pictureURL, updatedPhone); err != nil {
 		return nil, err

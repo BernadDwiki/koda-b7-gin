@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/bernaddwiki/koda-b7-weekly10/internal/dto"
@@ -66,8 +67,13 @@ func (s *AuthService) Register(
 		return nil, err
 	}
 
+	name := strings.TrimSpace(req.Name)
+	if name == "" {
+		name = strings.Split(req.Email, "@")[0]
+	}
+
 	user := model.User{
-		Name:        "",
+		Name:        name,
 		Email:       req.Email,
 		Password:    passwordHash,
 		Pin:         "",

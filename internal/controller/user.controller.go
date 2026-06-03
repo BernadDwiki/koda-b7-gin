@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -340,15 +341,28 @@ func (u *UserController) EditProfile(
 
 	claims := claimsRaw.(*jwt.JWTClaims)
 
+	// Debug: print all form values
+	form, err := ctx.MultipartForm()
+	if err != nil {
+		fmt.Printf("[DEBUG] MultipartForm error: %v\n", err)
+	} else {
+		fmt.Printf("[DEBUG] Form values: %v\n", form.Value)
+		fmt.Printf("[DEBUG] Form files: %v\n", form.File)
+	}
+
 	var body dto.EditProfileRequest
 	if err := ctx.ShouldBindWith(&body, binding.FormMultipart); err != nil {
-		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{Success: false, Message: errText.GetValidationErrorMessage(err)})
+		fmt.Printf("[DEBUG] Form binding error: %v\n", err)
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{Success: false, Message: fmt.Sprintf("Binding error: %v", err)})
 		return
 	}
 
+	fmt.Printf("[DEBUG] Parsed body - Name: '%s', Phone: '%s', Picture: %v\n", body.Name, body.PhoneNumber, body.ProfilePicture)
+
 	profile, err := u.service.UpdateProfile(ctx.Request.Context(), claims.UserID, body)
 	if err != nil {
-		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{Success: false, Message: err.Error()})
+		fmt.Printf("[DEBUG] Service error: %v\n", err)
+		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{Success: false, Message: fmt.Sprintf("Service error: %v", err)})
 		return
 	}
 
