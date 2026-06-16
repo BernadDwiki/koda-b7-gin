@@ -6,9 +6,12 @@ import (
 )
 
 func RegisterWalletRoutes(r gin.IRouter, walletController *controller.WalletController) {
-	r.GET("/wallet/dashboard", walletController.Dashboard)
-	r.GET("/wallet/transactions", walletController.TransactionHistory)
-	r.GET("/wallet/transaction-report", walletController.TransactionReport)
-	r.POST("/wallet/transfer", walletController.CreateTransfer)
-	r.POST("/wallet/top-up", walletController.CreateTopUp)
+	wallet := r.Group("/wallet")
+	{
+		wallet.GET("/dashboard", walletController.Dashboard)
+		wallet.GET("/transactions", walletController.TransactionHistory)
+		wallet.GET("/transaction-report", walletController.TransactionReport)
+		wallet.POST("/transfer", walletController.CreateTransfer)
+		wallet.POST("/top-up", walletController.CreateTopUp)
+	}
 }
