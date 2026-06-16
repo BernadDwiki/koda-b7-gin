@@ -26,7 +26,7 @@ type ReceiverListResponse struct {
 	PrevPage *int               `json:"prev_page"`
 }
 
-type SetPinRequest struct {
+type CreatePinRequest struct {
 	Pin string `json:"pin" binding:"required,len=6,numeric"`
 }
 
@@ -45,7 +45,7 @@ type ChangePasswordRequest struct {
 	NewPassword     string `json:"new_password" binding:"required,min=8"`
 }
 
-type EditPinRequest struct {
+type UpdatePinRequest struct {
 	CurrentPin string `json:"current_pin" binding:"required,len=6,numeric"`
 	NewPin     string `json:"new_pin" binding:"required,len=6,numeric"`
 }

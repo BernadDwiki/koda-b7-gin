@@ -35,7 +35,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.ForgotPasswordRequest"
+                            "$ref": "#/definitions/dto.ForgotPasswordRequest"
                         }
                     }
                 ],
@@ -43,19 +43,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
@@ -81,7 +81,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.LoginRequest"
+                            "$ref": "#/definitions/dto.LoginRequest"
                         }
                     }
                 ],
@@ -89,19 +89,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
@@ -129,19 +129,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
@@ -167,7 +167,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.RegisterRequest"
+                            "$ref": "#/definitions/dto.RegisterRequest"
                         }
                     }
                 ],
@@ -175,19 +175,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
@@ -213,7 +213,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.ResetPasswordRequest"
+                            "$ref": "#/definitions/dto.ResetPasswordRequest"
                         }
                     }
                 ],
@@ -221,19 +221,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
@@ -264,7 +264,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.CheckPinRequest"
+                            "$ref": "#/definitions/dto.CheckPinRequest"
                         }
                     }
                 ],
@@ -272,32 +272,32 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
             }
         },
-        "/user/update-pin": {
-            "put": {
+        "/user/create-pin": {
+            "post": {
                 "security": [
                     {
                         "BearerAuth": []
                     }
                 ],
-                "description": "Update current user PIN",
+                "description": "Create a new user PIN (first time)",
                 "consumes": [
                     "application/json"
                 ],
@@ -307,15 +307,15 @@ const docTemplate = `{
                 "tags": [
                     "User"
                 ],
-                "summary": "Update PIN",
+                "summary": "Create PIN",
                 "parameters": [
                     {
-                        "description": "Update PIN Request",
+                        "description": "Create PIN Request",
                         "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.UpdatePinRequest"
+                            "$ref": "#/definitions/dto.CreatePinRequest"
                         }
                     }
                 ],
@@ -323,19 +323,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
@@ -366,7 +366,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.ChangePasswordRequest"
+                            "$ref": "#/definitions/dto.ChangePasswordRequest"
                         }
                     }
                 ],
@@ -374,19 +374,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
@@ -414,19 +414,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
@@ -472,25 +472,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
@@ -538,32 +538,32 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
             }
         },
-        "/user/create-pin": {
-            "post": {
+        "/user/update-pin": {
+            "put": {
                 "security": [
                     {
                         "BearerAuth": []
                     }
                 ],
-                "description": "Create a new user PIN (first time)",
+                "description": "Update current user PIN",
                 "consumes": [
                     "application/json"
                 ],
@@ -573,15 +573,15 @@ const docTemplate = `{
                 "tags": [
                     "User"
                 ],
-                "summary": "Create PIN",
+                "summary": "Update PIN",
                 "parameters": [
                     {
-                        "description": "Create PIN Request",
+                        "description": "Update PIN Request",
                         "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.CreatePinRequest"
+                            "$ref": "#/definitions/dto.UpdatePinRequest"
                         }
                     }
                 ],
@@ -589,19 +589,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
@@ -629,19 +629,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
@@ -672,7 +672,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.CreateTopUpRequest"
+                            "$ref": "#/definitions/dto.CreateTopUpRequest"
                         }
                     }
                 ],
@@ -680,25 +680,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
@@ -742,25 +742,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
@@ -810,25 +810,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
@@ -859,7 +859,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.CreateTransferRequest"
+                            "$ref": "#/definitions/dto.CreateTransferRequest"
                         }
                     }
                 ],
@@ -867,31 +867,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response"
+                            "$ref": "#/definitions/dto.Response"
                         }
                     }
                 }
@@ -899,7 +899,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "github_com_bernaddwiki_koda-b7-weekly10_internal_dto.ChangePasswordRequest": {
+        "dto.ChangePasswordRequest": {
             "type": "object",
             "required": [
                 "current_password",
@@ -916,7 +916,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_bernaddwiki_koda-b7-weekly10_internal_dto.CheckPinRequest": {
+        "dto.CheckPinRequest": {
             "type": "object",
             "required": [
                 "pin"
@@ -927,7 +927,18 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_bernaddwiki_koda-b7-weekly10_internal_dto.CreateTopUpRequest": {
+        "dto.CreatePinRequest": {
+            "type": "object",
+            "required": [
+                "pin"
+            ],
+            "properties": {
+                "pin": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CreateTopUpRequest": {
             "type": "object",
             "required": [
                 "amount",
@@ -945,7 +956,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_bernaddwiki_koda-b7-weekly10_internal_dto.CreateTransferRequest": {
+        "dto.CreateTransferRequest": {
             "type": "object",
             "required": [
                 "amount",
@@ -967,22 +978,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_bernaddwiki_koda-b7-weekly10_internal_dto.UpdatePinRequest": {
-            "type": "object",
-            "required": [
-                "current_pin",
-                "new_pin"
-            ],
-            "properties": {
-                "current_pin": {
-                    "type": "string"
-                },
-                "new_pin": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_bernaddwiki_koda-b7-weekly10_internal_dto.ForgotPasswordRequest": {
+        "dto.ForgotPasswordRequest": {
             "type": "object",
             "required": [
                 "email"
@@ -993,7 +989,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_bernaddwiki_koda-b7-weekly10_internal_dto.LoginRequest": {
+        "dto.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1008,7 +1004,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_bernaddwiki_koda-b7-weekly10_internal_dto.RegisterRequest": {
+        "dto.RegisterRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1017,6 +1013,10 @@ const docTemplate = `{
             "properties": {
                 "email": {
                     "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 255
                 },
                 "password": {
                     "type": "string",
@@ -1024,7 +1024,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_bernaddwiki_koda-b7-weekly10_internal_dto.ResetPasswordRequest": {
+        "dto.ResetPasswordRequest": {
             "type": "object",
             "required": [
                 "new_password",
@@ -1040,7 +1040,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_bernaddwiki_koda-b7-weekly10_internal_dto.Response": {
+        "dto.Response": {
             "type": "object",
             "properties": {
                 "data": {},
@@ -1052,35 +1052,32 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_bernaddwiki_koda-b7-weekly10_internal_dto.CreatePinRequest": {
+        "dto.UpdatePinRequest": {
             "type": "object",
             "required": [
-                "pin"
+                "current_pin",
+                "new_pin"
             ],
             "properties": {
-                "pin": {
+                "current_pin": {
+                    "type": "string"
+                },
+                "new_pin": {
                     "type": "string"
                 }
             }
-        }
-    },
-    "securityDefinitions": {
-        "BearerAuth": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
         }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
-	Host:             "localhost:8080",
-	BasePath:         "/",
-	Schemes:          []string{"http"},
-	Title:            "E-Wallet API",
-	Description:      "API documentation for E-Wallet Backend",
+	Version:          "",
+	Host:             "",
+	BasePath:         "",
+	Schemes:          []string{},
+	Title:            "",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

@@ -68,19 +68,19 @@ func (u *UserController) GetProfile(
 	})
 }
 
-// SetPin godoc
-// @Summary Set PIN
-// @Description Set a new user PIN
+// CreatePin godoc
+// @Summary Create PIN
+// @Description Create a new user PIN (first time)
 // @Tags User
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Param request body dto.SetPinRequest true "Set PIN Request"
+// @Param request body dto.CreatePinRequest true "Create PIN Request"
 // @Success 200 {object} dto.Response
 // @Failure 422 {object} dto.Response
 // @Failure 401 {object} dto.Response
-// @Router /user/set-pin [post]
-func (u *UserController) SetPin(
+// @Router /user/create-pin [post]
+func (u *UserController) CreatePin(
 	ctx *gin.Context,
 ) {
 	claimsRaw, exists := ctx.Get("claims")
@@ -94,7 +94,7 @@ func (u *UserController) SetPin(
 
 	claims := claimsRaw.(*jwt.JWTClaims)
 
-	var body dto.SetPinRequest
+	var body dto.CreatePinRequest
 
 	if err := ctx.ShouldBindJSON(&body); err != nil {
 		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{
@@ -104,7 +104,7 @@ func (u *UserController) SetPin(
 		return
 	}
 
-	err := u.service.SetPin(
+	err := u.service.CreatePin(
 		ctx.Request.Context(),
 		claims.UserID,
 		body.Pin,
@@ -120,7 +120,7 @@ func (u *UserController) SetPin(
 
 	ctx.JSON(http.StatusOK, dto.Response{
 		Success: true,
-		Message: "set pin success",
+		Message: "create pin success",
 	})
 }
 
@@ -173,19 +173,19 @@ func (u *UserController) CheckPin(
 	ctx.JSON(http.StatusOK, dto.Response{Success: true, Message: "pin valid"})
 }
 
-// EditPin godoc
-// @Summary Edit PIN
+// UpdatePin godoc
+// @Summary Update PIN
 // @Description Update current user PIN
 // @Tags User
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Param request body dto.EditPinRequest true "Edit PIN Request"
+// @Param request body dto.UpdatePinRequest true "Update PIN Request"
 // @Success 200 {object} dto.Response
 // @Failure 422 {object} dto.Response
 // @Failure 401 {object} dto.Response
-// @Router /user/edit-pin [put]
-func (u *UserController) EditPin(
+// @Router /user/update-pin [put]
+func (u *UserController) UpdatePin(
 	ctx *gin.Context,
 ) {
 	claimsRaw, exists := ctx.Get("claims")
@@ -199,7 +199,7 @@ func (u *UserController) EditPin(
 
 	claims := claimsRaw.(*jwt.JWTClaims)
 
-	var body dto.EditPinRequest
+	var body dto.UpdatePinRequest
 	if err := ctx.ShouldBindJSON(&body); err != nil {
 		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{
 			Success: false,
@@ -208,7 +208,7 @@ func (u *UserController) EditPin(
 		return
 	}
 
-	if err := u.service.EditPin(ctx.Request.Context(), claims.UserID, body); err != nil {
+	if err := u.service.UpdatePin(ctx.Request.Context(), claims.UserID, body); err != nil {
 		ctx.JSON(http.StatusUnprocessableEntity, dto.Response{Success: false, Message: err.Error()})
 		return
 	}

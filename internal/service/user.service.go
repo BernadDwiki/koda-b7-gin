@@ -18,9 +18,9 @@ import (
 
 type IUserService interface {
 	GetProfile(ctx context.Context, userID int) (*dto.ProfileResponse, error)
-	SetPin(ctx context.Context, userID int, pin string) error
+	CreatePin(ctx context.Context, userID int, pin string) error
 	CheckPin(ctx context.Context, userID int, pin string) (bool, error)
-	EditPin(ctx context.Context, userID int, input dto.EditPinRequest) error
+	UpdatePin(ctx context.Context, userID int, input dto.UpdatePinRequest) error
 	FindReceivers(ctx context.Context, userID int, keyword string, page, limit int) (*dto.ReceiverListResponse, error)
 	UpdateProfile(ctx context.Context, userID int, input dto.EditProfileRequest) (*dto.ProfileResponse, error)
 	ChangePassword(ctx context.Context, userID int, input dto.ChangePasswordRequest) error
@@ -59,7 +59,7 @@ func (u *UserService) GetProfile(
 	}, nil
 }
 
-func (u *UserService) SetPin(
+func (u *UserService) CreatePin(
 	ctx context.Context,
 	userID int,
 	pin string,
@@ -98,10 +98,10 @@ func (u *UserService) CheckPin(
 	return hash.VerifyPassword(pin, existingPin), nil
 }
 
-func (u *UserService) EditPin(
+func (u *UserService) UpdatePin(
 	ctx context.Context,
 	userID int,
-	input dto.EditPinRequest,
+	input dto.UpdatePinRequest,
 ) error {
 	if input.CurrentPin == input.NewPin {
 		return errors.New("new pin must be different from current pin")
